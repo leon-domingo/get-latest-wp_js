@@ -1,0 +1,11 @@
+{
+  "name": "get-latest-wp",
+  "version": "1.0.0",
+  "description": "Get the latest Wordpress version",
+  "main": "index.js",
+  "scripts": {
+    "download": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
