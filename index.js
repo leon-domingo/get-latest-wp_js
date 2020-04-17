@@ -4,6 +4,9 @@ const fs = require('fs')
 const URL_GET_VERSION = 'https://api.wordpress.org/core/version-check/1.7/'
 const URL_GET_WP      = 'https://es.wordpress.org/latest-es_ES.tar.gz'
 
+// gathering the language parameter
+const language = process.argv[2] || 'es_ES'
+
 const downloadWp = (file, fileName) => {
   return function(res) {
     const contentLength = parseInt(res.headers['content-length'], 10)
@@ -48,13 +51,36 @@ http.get(URL_GET_VERSION, (res) => {
 
     res.on('end', () => {
       try {
+        // {
+        //   "offers": [
+        //     {
+        //       "response": "upgrade",
+        //       "download": "https://downloads.wordpress.org/release/wordpress-5.4.zip",
+        //       "locale": "en_US",
+        //       "packages": {
+        //         "full": "https://downloads.wordpress.org/release/wordpress-5.4.zip",
+        //         "no_content": "https://downloads.wordpress.org/release/wordpress-5.4-no-content.zip",
+        //         "new_bundled": "https://downloads.wordpress.org/release/wordpress-5.4-new-bundled.zip",
+        //         "partial": false,
+        //         "rollback": false
+        //       },
+        //       "current": "5.4",
+        //       "version": "5.4",
+        //       "php_version": "5.6.20",
+        //       "mysql_version": "5.0",
+        //       "new_bundled": "5.3",
+        //       "partial_version": false
+        //     },
+        //     ...
+        // }
+
         const parsedData = JSON.parse(rawData)
         const version = parsedData['offers'][0]['current']
 
-        const fileName = `wordpress-${version}-es_ES.tar.gz`
+        const fileName = `wordpress-${version}-${language}.tar.gz`
         const latestVersionFile = fs.createWriteStream(`./${fileName}`)
 
-        console.log(`Downloading Wordpress v${version} ...`)
+        console.log(`Downloading Wordpress v${version} (${language}) ...`)
         http.get(URL_GET_WP, downloadWp(latestVersionFile, fileName))
       }
       catch (err) {
