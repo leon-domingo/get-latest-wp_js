@@ -6,6 +6,6 @@
   "scripts": {
     "download": "node index.js"
   },
-  "author": "",
+  "author": "León Domingo <leon.domingo@gmail.com>",
   "license": "ISC"
 }
